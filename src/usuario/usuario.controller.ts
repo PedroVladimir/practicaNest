@@ -35,8 +35,8 @@ export class UsuarioController {
     return this.usuarioService.remove(id);
   }
 
-  @Post('login')
-  login(@Body() credencialesDto : CredencialesDto) {
-    return = this.usuarioService.acceder(credencialesDto)    
-  }
+  // @Post('login')
+  // login(@Body() credencialesDto : CredencialesDto) {
+  //  // return this.usuarioService.acceder(credencialesDto)    
+  // }
 }

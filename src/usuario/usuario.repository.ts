@@ -8,13 +8,15 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 @Injectable()
 export class UsuarioRepository {
 
-    constructor(
-        @InjectRepository(Usuario)
-        private readonly usuarioRepository : Repository<Usuario>,
-    ){}
+    constructor(@InjectRepository(Usuario) private readonly usuarioRepository : Repository<Usuario>,)
+    {}
 
     crear( createUsuarioDto : CreateUsuarioDto) {
         return this.usuarioRepository.save(createUsuarioDto);
+    }
+
+    buscarPorNombre(nombreUsuario: string){
+        return this.usuarioRepository.findOne({ where : {nombreUsuario}});
     }
 
     listar() {

@@ -1,22 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
 import { UsuarioRepository } from './usuario.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
-import { CredencialesDto } from './dto/credenciales-usuario.dto';
 
 
 @Injectable()
 export class UsuarioService {
 
-  constructor(
-    private readonly usuarioRepository : UsuarioRepository)
+  constructor(private readonly usuarioRepository : UsuarioRepository)
   {}
 
-  create(createUsuarioDto: CreateUsuarioDto) {
+  async create(createUsuarioDto: CreateUsuarioDto) : Promise<Usuario> {
+    const usuarioExistente = await this.usuarioRepository.buscarPorNombre(createUsuarioDto.nombreUsuario);
+    if(usuarioExistente) {
+      throw new ConflictException('Usuario Existente')
+    }
     return this.usuarioRepository.crear(createUsuarioDto);
+  }
+
+  async validarUsuario(nombreUsuario : string, password : string) : Promise<Usuario> {
+    const usuarioExistente = await this.usuarioRepository.buscarPorNombre(nombreUsuario);
+    if( !usuarioExistente || (usuarioExistente.password !== password) || (usuarioExistente.nombreUsuario !== nombreUsuario) ) {
+      throw new UnauthorizedException ('Nombre de Usuario o contraseña incorrectos',)
+    }
+    return usuarioExistente;
   }
 
   findAll() {
@@ -39,7 +48,5 @@ export class UsuarioService {
     return this.usuarioRepository.eliminar(id);
   }
 
-  acceder(credencialesSto : CredencialesDto){
 
-  }
 }

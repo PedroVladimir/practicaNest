@@ -5,7 +5,7 @@ export class CredencialesDto {
     @IsString()
     @IsEmail()
     @IsNotEmpty()
-    email : string;
+    nombreUsuario : string;
 
     @IsString()
     @IsNotEmpty()
