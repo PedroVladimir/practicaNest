@@ -9,10 +9,11 @@ export class AuthController {
     constructor(private usuarioService : UsuarioService, private authService : AuthService)
     {}
 
-    @Post('login')
+    @Post('/login')
     async login(@Body() credencialesDto : CredencialesDto ) {
         const usuario = await this.usuarioService.validarUsuario(credencialesDto.nombreUsuario, credencialesDto.password)
         return this.authService.login(usuario);
     }
 
 }
+ 

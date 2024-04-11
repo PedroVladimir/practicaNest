@@ -22,7 +22,7 @@ export class UsuarioService {
 
   async validarUsuario(nombreUsuario : string, password : string) : Promise<Usuario> {
     const usuarioExistente = await this.usuarioRepository.buscarPorNombre(nombreUsuario);
-    if( !usuarioExistente || (usuarioExistente.password !== password) || (usuarioExistente.nombreUsuario !== nombreUsuario) ) {
+    if( !usuarioExistente || (usuarioExistente.password !== password)) {
       throw new UnauthorizedException ('Nombre de Usuario o contraseña incorrectos',)
     }
     return usuarioExistente;
